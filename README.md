@@ -47,7 +47,54 @@ Ahhh... Toolchain installed. I think. But no source code. Need to blink an LED t
 
 Find my ESP8266 Blinky project <https://github.com/HankB/Blinky>, establish that the ESP32 uses the same GPIO for the on bopard LED (2) and copy the C++ source file. Build, flash and Voilà - a blinking blue LED! Now to get to work.
 
-Pull the repo to another directory, change blink frequency, build and flash to confirm that everything is in the repo that neds to be in the repo.
+Pull the repo to another directory, change blink frequency, build and flash to confirm that everything is in the repo that needs to be in the repo.
+
+## 2025-03-08 Serial I/O
+
+Useful for debugging. Again looking at <https://github.com/HankB/ESP8266-BME280-Publish/blob/main/src/main.cpp> for an example. This project also has some of the other stuff like MQTT and NTP that will be useful.
+
+Copy/paste some code for serial and it works. (NB: PlatformIO runs the serial monnotor at 9600 8-N-1 so code set to match.)
+
+## 2025-03-08 DS18B20
+
+Ref: <https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/>
+
+1. Opem PIO Home tab and click the "Libraries" button on the left margin. Search for "onewire" and click the top choice ("OneWire by Paul Stoffregen")
+1. Click "Add to Project" and select this project.
+1. Examples open - select " DS18x20_Temperature"
+1. Copy/paste code from `loop()` to project. Build and afdter adding definition for `ds` the project builds. 
+1. Now need to connect a DS18B20 to the ESP. Will use the "Normal" mode wiring and a TO-92 package DS18B20.
+
+## 2025-03-08 wiring
+
+Code says 10 but example from <https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/> uses GPIO 4 so switching that. Found a 5.6K resistor and used that for the pullup. No joy. Get repeated:
+
+```text
+No more addresses.
+
+No more addresses.
+
+No more addresses.
+```
+
+Library provides a link to <https://www.pjrc.com/teensy/td_libs_OneWire.html> and there is a note:
+
+```text
+OneWire requires a single 4.7K pullup resistor, connected between the pin and your power supply. When using very long wires, or with counterfeit DS18B20 chips and 3.3V power, a resistor in the 1K to 2.7K range may be required. 
+```
+
+Since this is being powered by a 3V3 ESP, trying a 2.6K resistor and now see
+
+```text
+ROM = 28 D5 27 56 0 0 0 49
+  Chip = DS18B20
+  Data = 1 53 1 7F 80 7F FF D 10 66  CRC=66
+  Temperature = 21.19 Celsius, 70.14 Fahrenheit
+loop
+No more addresses.
+```
+
+Great success!
 
 ## Errata
 
