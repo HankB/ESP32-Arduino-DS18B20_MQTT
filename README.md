@@ -65,7 +65,7 @@ Ref: <https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/>
 1. Copy/paste code from `loop()` to project. Build and afdter adding definition for `ds` the project builds. 
 1. Now need to connect a DS18B20 to the ESP. Will use the "Normal" mode wiring and a TO-92 package DS18B20.
 
-## 2025-03-08 wiring
+## 2025-03-08 wiring and test
 
 Code says 10 but example from <https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/> uses GPIO 4 so switching that. Found a 5.6K resistor and used that for the pullup. No joy. Get repeated:
 
@@ -83,7 +83,7 @@ Library provides a link to <https://www.pjrc.com/teensy/td_libs_OneWire.html> an
 OneWire requires a single 4.7K pullup resistor, connected between the pin and your power supply. When using very long wires, or with counterfeit DS18B20 chips and 3.3V power, a resistor in the 1K to 2.7K range may be required. 
 ```
 
-Since this is being powered by a 3V3 ESP, trying a 2.6K resistor and now see
+Since this is being powered by a 3V3 ESP, trying a 2.6K resistor and now see:
 
 ```text
 ROM = 28 D5 27 56 0 0 0 49
@@ -95,6 +95,30 @@ No more addresses.
 ```
 
 Great success!
+
+Add a 2nd sensor:
+
+```text
+ROM = 28 4C 2E 57 0 0 0 12
+  Chip = DS18B20
+  Data = 1 50 1 7F 80 7F FF 10 10 C6  CRC=C6
+  Temperature = 21.00 Celsius, 69.80 Fahrenheit
+loop
+ROM = 28 D5 27 56 0 0 0 49
+  Chip = DS18B20
+  Data = 1 58 1 7F 80 7F FF 8 10 76  CRC=76
+  Temperature = 21.50 Celsius, 70.70 Fahrenheit
+loop
+No more addresses.
+```
+
+`ROM` is the sensor address seen on the Raspberry Pi. These can be mapped to tags (in the future.)
+
+## 2025-03-08 refactor DS18B20 code
+
+* Provide an `init_DS18B20()` that will identify all available sensors and save their addresses.
+* Provide a `read_DS18B20(addr)` that will read a specified sensor and return the reading.
+
 
 ## Errata
 
