@@ -42,3 +42,7 @@ Release notes: https://docs.platformio.org/en/latest/history.html
 Warning! Please restart IDE to affect PIO Home changes
 hbarta@olive:~/Programming/ESP32-Arduino-DS18B20_MQTT$ 
 ```
+
+Ahhh... Toolchain installed. I think. But no source code. Need to blink an LED to prove everything is working.
+
+Find my ESP8266 Blinky project <https://github.com/HankB/Blinky>, establish that the ESP32 uses the same GPIO for the on bopard LED (2) and copy the C++ source file. Build, flash and Voilà - a blinking blue LED! Now to get to work.
