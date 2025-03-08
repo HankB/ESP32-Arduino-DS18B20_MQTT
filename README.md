@@ -65,7 +65,7 @@ Copy/paste some code for serial and it works. (NB: PlatformIO runs the serial mo
 
 Ref: <https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/>
 
-1. Opem PIO Home tab and click the "Libraries" button on the left margin. Search for "onewire" and click the top choice ("OneWire by Paul Stoffregen")
+1. Open PIO Home tab and click the "Libraries" button on the left margin. Search for "onewire" and click the top choice ("OneWire by Paul Stoffregen")
 1. Click "Add to Project" and select this project.
 1. Examples open - select " DS18x20_Temperature"
 1. Copy/paste code from `loop()` to project. Build and afdter adding definition for `ds` the project builds. 
@@ -85,9 +85,8 @@ No more addresses.
 
 Library provides a link to <https://www.pjrc.com/teensy/td_libs_OneWire.html> and there is a note:
 
-```text
-OneWire requires a single 4.7K pullup resistor, connected between the pin and your power supply. When using very long wires, or with counterfeit DS18B20 chips and 3.3V power, a resistor in the 1K to 2.7K range may be required. 
-```
+
+> OneWire requires a single 4.7K pullup resistor, connected between the pin and your power supply. When using very long wires, or with counterfeit DS18B20 chips and 3.3V power, a resistor in the 1K to 2.7K range may be required. 
 
 Since this is being powered by a 3V3 ESP, trying a 2.6K resistor and now see:
 
