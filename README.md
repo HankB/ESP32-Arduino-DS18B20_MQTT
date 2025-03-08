@@ -8,11 +8,11 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * Read a Dallas DS18B20 temperature sensor.
 * Publish the readings via MQTT
 
-## 2025-03-08 Status
+## Status
 
-* Toolchain installed and working.
-* DS18B20 example code working.
-* DS18B20 refactor in progress.
+* 2025-03-08 Toolchain installed and working.
+* 2025-03-08 DS18B20 example code working.
+* 2025-03-08 DS18B20 refactor in progress.
 
 ## 2025-03-08 Getting started
 
