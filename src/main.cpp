@@ -4,7 +4,6 @@
 static const int max_sensors = 5;
 static DS18B20 sensors[max_sensors];
 
-
 const int LED = LED_BUILTIN; // Assign LED pin i.e: D1 on NodeMCU
 // OneWire  ds(4);  // on pin 4 (a 4.7K resistor is necessary)
 
@@ -18,17 +17,19 @@ void setup()
   while (!Serial)
     ; // time to get serial running
 #endif
-init_DS18B20(sensors, max_sensors);
 }
 
 void loop()
 {
+  int sensors_found = init_DS18B20(sensors, max_sensors);
+
   digitalWrite(LED, HIGH); // turn the LED on
   delay(500);              // wait for a second
   digitalWrite(LED, LOW);  // turn the LED off
   delay(500);              // wait for a second
+  float temp = read_DS18B20(&sensors[0]);
 #if serial_IO
-  Serial.print("loop\n");
+Serial.printf("%d sensors, first is %f\n", sensors_found, temp);
+  
 #endif
-float temp = read_DS18B20(&sensors[0]);
 }

@@ -3,6 +3,7 @@
 typedef struct
 {
     byte addr[8];
+    int type_s;
     char *tag;
 } DS18B20;
 
