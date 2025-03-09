@@ -15,6 +15,13 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-08 DS18B20 refactor in progress.
 * 2025-03-08 DS18B20 refactor complete, serial output conditional
 
+## TODO
+
+* WiFi
+* NTP
+* MQTT
+* Publish temperature at desired interval.
+
 ## 2025-03-08 Getting started
 
 1. Install the PlatformIO IDE in VS Code. (currently V 3.3.4)
