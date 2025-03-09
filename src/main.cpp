@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "DS18B20.h"
 #include "app.h"
+#include "app_wifi.h"
 
 // override serial_IO in app.h
 #undef serial_IO
@@ -14,6 +15,7 @@ const int LED = LED_BUILTIN; // Assign LED pin i.e: D1 on NodeMCU
 void setup()
 {
   pinMode(LED, OUTPUT);
+  init_wifi();
 #if serial_IO
   Serial.begin(9600);
   while (!Serial)
