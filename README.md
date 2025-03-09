@@ -13,12 +13,13 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-08 Toolchain installed and working.
 * 2025-03-08 DS18B20 example code working.
 * 2025-03-08 DS18B20 refactor in progress.
-* 2025-03-08 DS18B20 refactor complete, serial output conditional\
-* 2025-03-08 WiFi associates
+* 2025-03-08 DS18B20 refactor complete, serial output conditional
+* 2025-03-08 WiFi associates - needs error checking/handling
 
 ## TODO
 
-* NTP
+* WiFi error checking/handling
+* NTP 
 * MQTT
 * Publish temperature at desired interval.
 
@@ -137,6 +138,10 @@ No more addresses.
 Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with my AP previously so it already has working credentials.)
 
 Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
+
+## 2025-03-09 NTP client
+
+Use the first library that came up in the search `NTPClient by Fabrice Weinberg`.
 
 ## Errata
 
