@@ -1,13 +1,15 @@
 #include <Arduino.h>
 #include "DS18B20.h"
+#include "app.h"
+
+// override serial_IO in app.h
+#undef serial_IO
+#define serial_IO true 
 
 static const int max_sensors = 5;
 static DS18B20 sensors[max_sensors];
 
 const int LED = LED_BUILTIN; // Assign LED pin i.e: D1 on NodeMCU
-// OneWire  ds(4);  // on pin 4 (a 4.7K resistor is necessary)
-
-#define serial_IO true
 
 void setup()
 {
@@ -21,15 +23,25 @@ void setup()
 
 void loop()
 {
-  int sensors_found = init_DS18B20(sensors, max_sensors);
+  int sensors_found = 0;
+  if (0 == sensors_found)
+    sensors_found = init_DS18B20(sensors, max_sensors);
 
   digitalWrite(LED, HIGH); // turn the LED on
-  delay(500);              // wait for a second
-  digitalWrite(LED, LOW);  // turn the LED off
-  delay(500);              // wait for a second
-  float temp = read_DS18B20(&sensors[0]);
+  for (int i = 0; i < sensors_found; i++)
+  {
+    sensors[i].temperature = read_DS18B20(&sensors[0]);
+  }
+  digitalWrite(LED, LOW); // turn the LED off
+
 #if serial_IO
-Serial.printf("%d sensors, first is %f\n", sensors_found, temp);
-  
+  Serial.printf("%d sensors", sensors_found);
+  for (int i = 0; i < sensors_found; i++)
+  {
+    Serial.printf(", %f", sensors[i].temperature);
+  }
+  Serial.println("");
+
 #endif
+  delay(1000); // wait for a second
 }

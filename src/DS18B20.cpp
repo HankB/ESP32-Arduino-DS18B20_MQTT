@@ -3,9 +3,11 @@
     and heavily mangled to meet local needs.
 */
 
+#include <Arduino.h>
 #include <OneWire.h>
 
 #include "DS18B20.h"
+#include "app.h"
 
 OneWire ds(4); // on pin 4 (a 2.6K resistor is used for the ESP)
 
@@ -28,6 +30,7 @@ int init_DS18B20(DS18B20 *sensors, int max_sensors)
         {
             return count;
         }
+#if serial_IO
         Serial.print("ROM =");
         for (int i = 0; i < 8; i++)
         {
@@ -62,6 +65,30 @@ int init_DS18B20(DS18B20 *sensors, int max_sensors)
             continue;
         }
 
+#else
+        if (OneWire::crc8(sensors[count].addr, 7) !=
+            sensors[count].addr[7])
+        {
+            continue;
+        }
+        // the first ROM byte indicates which chip
+        switch (sensors[count].addr[0])
+        {
+        case 0x10:
+            sensors[count].type_s = 1;
+            break;
+        case 0x28:
+            sensors[count].type_s = 0;
+            break;
+        case 0x22:
+            sensors[count].type_s = 0;
+            break;
+        default:
+            continue;
+        }
+
+#endif
+
         count++; // look for next DS18B20
     }
     return 0;
@@ -85,19 +112,24 @@ float read_DS18B20(DS18B20 *s)
     ds.select(s->addr);
     ds.write(0xBE); // Read Scratchpad
 
+#if serial_IO
     Serial.print("  Data = ");
     Serial.print(present, HEX);
     Serial.print(" ");
+#endif
     for (i = 0; i < 9; i++)
     { // we need 9 bytes
         data[i] = ds.read();
+#if serial_IO
         Serial.print(data[i], HEX);
         Serial.print(" ");
+#endif
     }
+#if serial_IO
     Serial.print(" CRC=");
     Serial.print(OneWire::crc8(data, 8), HEX);
     Serial.println();
-
+#endif
     // Convert the data to actual temperature
     // because the result is a 16 bit signed integer, it should
     // be stored to an "int16_t" type, which is always 16 bits
@@ -126,11 +158,13 @@ float read_DS18B20(DS18B20 *s)
     }
     celsius = (float)raw / 16.0;
     fahrenheit = celsius * 1.8 + 32.0;
+#if serial_IO
     Serial.print("  Temperature = ");
     Serial.print(celsius);
     Serial.print(" Celsius, ");
     Serial.print(fahrenheit);
     Serial.println(" Fahrenheit");
+#endif
 
     return fahrenheit;
 }
