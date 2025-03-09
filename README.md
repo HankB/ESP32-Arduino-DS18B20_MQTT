@@ -13,11 +13,11 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-08 Toolchain installed and working.
 * 2025-03-08 DS18B20 example code working.
 * 2025-03-08 DS18B20 refactor in progress.
-* 2025-03-08 DS18B20 refactor complete, serial output conditional
+* 2025-03-08 DS18B20 refactor complete, serial output conditional\
+* 2025-03-08 WiFi associates
 
 ## TODO
 
-* WiFi
 * NTP
 * MQTT
 * Publish temperature at desired interval.
@@ -132,6 +132,11 @@ No more addresses.
 * Provide an `init_DS18B20()` that will identify all available sensors and save their addresses.
 * Provide a `read_DS18B20(addr)` that will read a specified sensor and return the reading.
 
+## 2025-03-09 add WiFi
+
+Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with my AP previously so it already has working credentials.)
+
+Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
 
 ## Errata
 
