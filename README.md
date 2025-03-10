@@ -138,6 +138,28 @@ Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with
 
 Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
 
+<<<<<<< HEAD
+=======
+## 2025-03-09 NTP client
+
+Use the first library that came up in the search `NTPClient by Fabrice Weinberg`. See also <https://github.com/arduino-libraries/NTPClient>
+
+## 2025-03-10 MQTT
+
+Using `PubSubClient by Nick O'Leary` (and which I've used before.) Github: <https://github.com/knolleary/pubsubclient> Docs: <https://pubsubclient.knolleary.net/>
+
+Question: Do we open the connection to the broker and hold it or do we open the connection when needed and then close it immediately thereafter? Present code opens the connection on every loop and it seems to time out shortly thereafter.
+
+## 2025-03-10 testing
+
+Not a lot of formal testing has been performed, mostly just see "if it works." Some testing has been performed to verify potential WiFi issues.
+
+* Power down AP and then power it back up: ESP reconnects.
+* Power down AP, reset ESP ("EN" button near USB port), power up AP: ESP eventually reconnects.
+
+Following tests with a TEST AP, the ESP is configured to associate with the IoT LAN.
+
+>>>>>>> 4635e8d (MQTT, more robust WiFi)
 ## Errata
 
 * 2025-03-08 PIO complains that it cannot find the `go` command during startup. I ignore this.
