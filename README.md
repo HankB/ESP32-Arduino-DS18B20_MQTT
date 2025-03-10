@@ -15,11 +15,11 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-08 DS18B20 refactor in progress.
 * 2025-03-08 DS18B20 refactor complete, serial output conditional
 * 2025-03-08 WiFi associates - needs error checking/handling
+* 2025-03-08 NTP
+* 2025-03-10 handle AP disconnect
 
 ## TODO
 
-* WiFi error checking/handling
-* NTP 
 * MQTT
 * Publish temperature at desired interval.
 
@@ -142,6 +142,15 @@ Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and
 ## 2025-03-09 NTP client
 
 Use the first library that came up in the search `NTPClient by Fabrice Weinberg`.
+
+## 2025-03-10 testing
+
+Not a lot of formal testing has been performed, mostly just see "if it works." Some testing has been performed to verify potential WiFi issues.
+
+* Power down AP and then power it back up: ESP reconnects.
+* Power down AP, reset ESP ("EN" button near USB port), power up AP: ESP eventually reconnects.
+
+Following tests with a TEST AP, the ESP is configured to associate with the IoT LAN.
 
 ## Errata
 

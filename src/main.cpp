@@ -15,21 +15,32 @@ const int LED = LED_BUILTIN; // Assign LED pin i.e: D1 on NodeMCU
 void setup()
 {
   pinMode(LED, OUTPUT);
-  init_wifi();
 #if serial_IO
   Serial.begin(115200);
   while (!Serial)
     ; // time to get serial running
 #endif
+  init_wifi();
   init_ntp();
 }
 
 void loop()
 {
-  int sensors_found = 0;
+  static int sensors_found = 0;
   int rc;
-  time_t epoch = 0;
-  //time_t ntp_update_timestamp;
+  static time_t epoch = 0;
+
+  // check WiFi connection
+  while (!is_connected_wifi())
+  {
+#if serial_IO
+    Serial.println("loop() WiFi lost connection");
+#endif
+    // reconnect_wifi(); needed? autoReconnect is set by default.
+    init_wifi();
+    delay(1000); // wait for a second
+  }
+  report_wifi();
 
   if (0 == sensors_found)
     sensors_found = init_DS18B20(sensors, max_sensors);
@@ -45,8 +56,8 @@ void loop()
   epoch = get_time_t();
 
 #if serial_IO
-Serial.printf("\t\t\ttime() returns %u\n", epoch);
-Serial.printf("%d sensors", sensors_found);
+  Serial.printf("\t\t\ttime() returns %u\n", epoch);
+  Serial.printf("%d sensors", sensors_found);
   for (int i = 0; i < sensors_found; i++)
   {
     Serial.printf(", %f", sensors[i].temperature);
