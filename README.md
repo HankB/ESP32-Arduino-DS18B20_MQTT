@@ -161,6 +161,10 @@ Not a lot of formal testing has been performed, mostly just see "if it works." S
 
 Following tests with a TEST AP, the ESP is configured to associate with the IoT LAN.
 
+Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with my AP previously so it already has working credentials.)
+
+Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
+
 ## Errata
 
 * 2025-03-08 PIO complains that it cannot find the `go` command during startup. I ignore this.
