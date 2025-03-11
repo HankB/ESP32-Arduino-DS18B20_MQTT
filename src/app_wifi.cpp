@@ -1,7 +1,10 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
+<<<<<<< HEAD
 #include <PubSubClient.h>
+=======
+>>>>>>> 61fc2a1 (WiFi improved, NTP working)
 
 #include "app_wifi.h"
 

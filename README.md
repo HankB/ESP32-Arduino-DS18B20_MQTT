@@ -13,14 +13,13 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-08 Toolchain installed and working.
 * 2025-03-08 DS18B20 example code working.
 * 2025-03-08 DS18B20 refactor in progress.
-* 2025-03-08 DS18B20 refactor complete, serial output conditional
-* 2025-03-08 WiFi associates - needs error checking/handling
-* 2025-03-08 NTP
-* 2025-03-10 handle AP disconnect
-* 2025-03-10 MQTT working
+* 2025-03-08 DS18B20 refactor complete, serial output conditional\
+* 2025-03-08 WiFi associates
 
 ## TODO
 
+* NTP
+* MQTT
 * Publish temperature at desired interval.
 
 ## 2025-03-08 Getting started
@@ -138,25 +137,6 @@ No more addresses.
 Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with my AP previously so it already has working credentials.)
 
 Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
-
-## 2025-03-09 NTP client
-
-Use the first library that came up in the search `NTPClient by Fabrice Weinberg`. See also <https://github.com/arduino-libraries/NTPClient>
-
-## 2025-03-10 MQTT
-
-Using `PubSubClient by Nick O'Leary` (and which I've used before.) Github: <https://github.com/knolleary/pubsubclient> Docs: <https://pubsubclient.knolleary.net/>
-
-Question: Do we open the connection to the broker and hold it or do we open the connection when needed and then close it immediately thereafter? Present code opens the connection on every loop and it seems to time out shortly thereafter.
-
-## 2025-03-10 testing
-
-Not a lot of formal testing has been performed, mostly just see "if it works." Some testing has been performed to verify potential WiFi issues.
-
-* Power down AP and then power it back up: ESP reconnects.
-* Power down AP, reset ESP ("EN" button near USB port), power up AP: ESP eventually reconnects.
-
-Following tests with a TEST AP, the ESP is configured to associate with the IoT LAN.
 
 ## Errata
 
