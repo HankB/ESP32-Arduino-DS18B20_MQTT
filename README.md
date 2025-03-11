@@ -17,10 +17,10 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-08 WiFi associates - needs error checking/handling
 * 2025-03-08 NTP
 * 2025-03-10 handle AP disconnect
+* 2025-03-10 MQTT working
 
 ## TODO
 
-* MQTT
 * Publish temperature at desired interval.
 
 ## 2025-03-08 Getting started
@@ -141,7 +141,13 @@ Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and
 
 ## 2025-03-09 NTP client
 
-Use the first library that came up in the search `NTPClient by Fabrice Weinberg`.
+Use the first library that came up in the search `NTPClient by Fabrice Weinberg`. See also <https://github.com/arduino-libraries/NTPClient>
+
+## 2025-03-10 MQTT
+
+Using `PubSubClient by Nick O'Leary` (and which I've used before.) Github: <https://github.com/knolleary/pubsubclient> Docs: <https://pubsubclient.knolleary.net/>
+
+Question: Do we open the connection to the broker and hold it or do we open the connection when needed and then close it immediately thereafter? Present code opens the connection on every loop and it seems to time out shortly thereafter.
 
 ## 2025-03-10 testing
 
@@ -161,3 +167,5 @@ Following tests with a TEST AP, the ESP is configured to associate with the IoT 
 Warning! Please install `99-platformio-udev.rules`. 
 More details: https://docs.platformio.org/en/latest/core/installation/udev-rules.html
 ```
+
+* 2025-05-10 [debugging no-associate on Android hotspot](https://github.com/espressif/arduino-esp32/issues/2110#issuecomment-2711021058). Debugging info at <https://docs.espressif.com/projects/arduino-esp32/en/latest/guides/core_debug.html?highlight=logging> (I have no plans to switch to the `pioarduino` for this project.)

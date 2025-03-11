@@ -22,6 +22,7 @@ void setup()
 #endif
   init_wifi();
   init_ntp();
+  init_mqtt("mqtt.localdomain");
 }
 
 void loop()
@@ -29,6 +30,7 @@ void loop()
   static int sensors_found = 0;
   int rc;
   static time_t epoch = 0;
+  static bool already_published = false;
 
   // check WiFi connection
   while (!is_connected_wifi())
@@ -41,6 +43,9 @@ void loop()
     delay(1000); // wait for a second
   }
   report_wifi();
+
+  if (~mqtt_is_connected())
+    mqtt_reconnect();
 
   if (0 == sensors_found)
     sensors_found = init_DS18B20(sensors, max_sensors);
@@ -65,6 +70,13 @@ void loop()
   Serial.println("");
 
 #endif
+
+// TODO temporary until there is code to build a proper topic
+// and payload
+  if(!already_published) {
+    mqtt_publish("ESP32", "now up");
+    already_published = true;
+  }
 
   delay(1000); // wait for a second
 }

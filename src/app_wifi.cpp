@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <NTPClient.h>
+#include <PubSubClient.h>
 
 #include "app_wifi.h"
 
@@ -25,7 +26,7 @@ int init_wifi(void)
 
     while (retries--)
     {
-        WiFi.begin("Nacho24", "Nachos Rule 89765433");
+        WiFi.begin();
         if ((st = WiFi.status()) == WL_CONNECTED)
         {
 #if serial_IO
@@ -117,7 +118,8 @@ void init_ntp(void)
 }
 
 /*
-    Update NTP client. It will ignore requests <60s apart.
+    Update NTP client.
+    It seems to ignore requests < autoReconnect seconds apart.
 */
 int update_ntp(void)
 {
@@ -127,4 +129,72 @@ int update_ntp(void)
 time_t get_time_t(void)
 {
     return timeClient.getEpochTime();
+}
+
+/******************************************
+
+    Manage the MQTT connection and publish messages.
+
+    NB: This is coded to work on a local LAN and with
+        a broker that has password authentication
+        disabled. The broker in use is Mosquitto on
+        Debian (Raspberry Pi) The README has notes for
+        how to disable password authentication for
+        Mosquitto. Search for 'allow_anonymous` and
+        Mosquitto.
+
+        The example code at 
+        https://github.com/knolleary/pubsubclient/blob/master/examples/mqtt_basic/mqtt_basic.ino
+        provides the inspiration for the MQTT code below.
+        No callback() is provided because there is no 
+        current plan to subscribe to MQTT messages.
+
+******************************************/
+
+static WiFiClient espClient;
+static PubSubClient client(espClient);
+static unsigned long lastMsg = 0;
+
+// override serial_IO in app.h
+#undef serial_IO
+#define serial_IO true
+
+void init_mqtt(const char* broker)
+{
+    client.setServer(broker, 1883);
+}
+
+void mqtt_reconnect(void)
+{
+    // Loop until we're reconnected
+    while (!client.connected())
+    {
+        Serial.print("Attempting MQTT connection...");
+        // Create a random client ID
+        String clientId = "ESP32-";
+        clientId += String(random(0xffff), HEX);
+        // Attempt to connect
+        if (client.connect(clientId.c_str()))
+        {
+            Serial.println("connected");
+        }
+        else
+        {
+            Serial.print("failed, rc=");
+            Serial.print(client.state());
+            Serial.println(" try again in 5 seconds");
+            // Wait 5 seconds before retrying
+            delay(5000);
+        }
+    }
+}
+
+bool mqtt_is_connected(void)
+{
+    return client.connected();
+}
+
+bool mqtt_publish(const char *topic, const char *payload)
+{
+    return client.publish(topic, payload);
 }
