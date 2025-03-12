@@ -5,6 +5,7 @@ int init_wifi(void);
 bool is_connected_wifi(void);
 bool reconnect_wifi(void);
 void report_wifi(void);
+const char * gethostname_wifi(void);
 
 void init_ntp(void);
 int update_ntp(void);

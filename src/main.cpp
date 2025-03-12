@@ -2,6 +2,8 @@
 #include "DS18B20.h"
 #include "app.h"
 #include "app_wifi.h"
+#include <stdio.h>
+#include <strings.h>
 
 // override serial_IO in app.h
 #undef serial_IO
@@ -11,6 +13,10 @@ static const int max_sensors = 5;
 static DS18B20 sensors[max_sensors];
 
 const int LED = LED_BUILTIN; // Assign LED pin i.e: D1 on NodeMCU
+
+static const char *build_topic(char *buf, int buf_len,
+                               const char *location, const char *id);
+static const char *build_payload(DS18B20 *s, time_t t);
 
 void setup()
 {
@@ -48,7 +54,21 @@ void loop()
     mqtt_reconnect();
 
   if (0 == sensors_found)
+  {
     sensors_found = init_DS18B20(sensors, max_sensors);
+
+    // init tag and topic for the MQTT message
+    for (int s = 0; s < sensors_found; s++)
+    {
+      sensors[s].tag[0] = '\0'; // init string
+      for (int i = 0; i < 8; i++)
+      {
+        int len = strlen(sensors[s].tag);
+        snprintf(sensors[s].tag + len, tag_len - len, "%2.2x", sensors[s].addr[i]);
+      }
+      build_topic(sensors[s].topic, topic_len, "lab", sensors[s].tag);
+    }
+  }
 
   digitalWrite(LED, HIGH); // turn the LED on
   for (int i = 0; i < sensors_found; i++)
@@ -69,14 +89,41 @@ void loop()
   }
   Serial.println("");
 
+  for (int s = 0; s < sensors_found; s++)
+  {
+    mqtt_publish(sensors[s].topic, build_payload(&sensors[s], epoch));
+  }
 #endif
 
-// TODO temporary until there is code to build a proper topic
-// and payload
-  if(!already_published) {
-    mqtt_publish("ESP32", "now up");
-    already_published = true;
-  }
+  // wait for 60 seconds, minus typoical time to traverse the loop,
+  // 1s for each sensor.
+  delay(1000 * (60 - sensors_found)); 
+}
 
-  delay(1000); // wait for a second
+/******************************************
+ *
+ *  build the topic (once) and the payload (every sample)
+ *
+ *  Topic will be stored in the DS18B20 struct.
+ ******************************************/
+
+// topic will look like HA/{hostname}/{location}/{id}
+// "HA/ESP01/upstairs/temp.03"
+static const char *build_topic(char *buf, int buf_len, const char *location, const char *id)
+{
+  snprintf(buf, buf_len, "HA/%s/%s/%s", gethostname_wifi(), location, id);
+  return buf;
+}
+
+// payload will look like
+// {"t": 1741749182, "temp": 63.4, "device":"DS18B20", "tag":"284c2e5700000012"}
+static const int payload_len = 128;
+static char payload[payload_len];
+
+static const char *build_payload(DS18B20 *s, time_t t)
+{
+  snprintf(payload, payload_len,
+           "{\"t\": %u, \"temp\": %.2f, \"device\":\"DS18B20\", \"tag\":\"%s\"}",
+           t, s->temperature, s->tag);
+  return payload;
 }

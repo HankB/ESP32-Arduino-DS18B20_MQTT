@@ -15,12 +15,21 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-08 DS18B20 refactor in progress.
 * 2025-03-08 DS18B20 refactor complete, serial output conditional\
 * 2025-03-08 WiFi associates
+* 2025-03-09 NTP
+* 2025-03-11 MQTT
+* 2025-03-11 Publish temperature at desired interval.
+* 2025-03-11 first revision is complete.
 
 ## TODO
 
-* NTP
-* MQTT
-* Publish temperature at desired interval.
+Code is functioning and usable as is, but some things could be improved. Lots of parameters are hard coded like
+
+* MQTT Broker (Same for all installs on a site.) It could be arbitrarily set to "mqtt.localdomain" as long as the host with that name is the one runing the broker.
+* location (in topic) - specific to each sensor.
+* last component in topic as well as ID in "tag" in the payload are the 1-Wire device ID.
+* SSID and password are hard coded and stored in EEPROM. There are facilities to allow the device to be configured either by acting as an AP or using Bluetooth. But these are also constant for a site.
+
+Location and "tag" could be mapped to the 1-Wire device ID and this could be hard coded in a table in the application. Better yet, the 
 
 ## 2025-03-08 Getting started
 
@@ -134,11 +143,7 @@ No more addresses.
 
 ## 2025-03-09 add WiFi
 
-Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with my AP previously so it already has working credentials.)
-
-Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
-
-Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with my AP previously so it already has working credentials.)
+Include the header WiFi.h and it Just Works. (NB: This ESP has associated with my AP previously so it already has working credentials.) WiFi API docs at <https://docs.espressif.com/projects/arduino-esp32/en/latest/api/wifi.html>
 
 Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
 
@@ -161,9 +166,8 @@ Not a lot of formal testing has been performed, mostly just see "if it works." S
 
 Following tests with a TEST AP, the ESP is configured to associate with the IoT LAN.
 
-Include the header WiFi.h and it JKust Works. (NB: This EWSP has associated with my AP previously so it already has working credentials.)
+Include the header WiFi.h and it Just Works. (NB: This ESP has associated with my AP previously so it already has working credentials.)
 
-Added `wifi.cpp` and `app_wifi.h` to use for WiFi related code including NTP and MQTT.
 
 ## Errata
 

@@ -90,6 +90,10 @@ void report_wifi(void)
 #endif
 }
 
+const char * gethostname_wifi(void)
+{
+    return WiFi.getHostname();
+}
 /******************************************
 
     Use the WiFi connection to update time via NTP.
