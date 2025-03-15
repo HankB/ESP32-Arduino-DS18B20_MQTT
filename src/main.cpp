@@ -28,7 +28,7 @@ void setup()
 #endif
   init_wifi();
   init_ntp();
-  init_mqtt("mqtt.localdomain");
+  init_mqtt("spartan.localdomain");
 }
 
 void loop()
