@@ -168,7 +168,6 @@ Following tests with a TEST AP, the ESP is configured to associate with the IoT 
 
 Include the header WiFi.h and it Just Works. (NB: This ESP has associated with my AP previously so it already has working credentials.)
 
-
 ## Errata
 
 * 2025-03-08 PIO complains that it cannot find the `go` command during startup. I ignore this.
@@ -180,3 +179,5 @@ More details: https://docs.platformio.org/en/latest/core/installation/udev-rules
 ```
 
 * 2025-05-10 [debugging no-associate on Android hotspot](https://github.com/espressif/arduino-esp32/issues/2110#issuecomment-2711021058). Debugging info at <https://docs.espressif.com/projects/arduino-esp32/en/latest/guides/core_debug.html?highlight=logging> (I have no plans to switch to the `pioarduino` for this project.)
+
+* 2025-03-16 PIO required `python3-venv` on Debian Trixie (Testing.) Also required the `udev` rules to connect to the ESP.
