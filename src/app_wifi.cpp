@@ -110,7 +110,7 @@ const char * gethostname_wifi(void)
 
 ******************************************/
 static WiFiUDP ntpUDP;
-static NTPClient timeClient(ntpUDP, "192.168.1.1", 0, (1024 * 1000)); // In ms, 2^10 seconds, 63 minutes
+static NTPClient timeClient(ntpUDP, "us.pool.ntp.org", 0, (1024 * 1000)); // In ms, 2^10 seconds, 63 minutes
 
 /*
     initialize NTP client

@@ -28,7 +28,7 @@ void setup()
 #endif
   init_wifi();
   init_ntp();
-  init_mqtt("spartan.localdomain");
+  init_mqtt("192.168.1.117");
 }
 
 void loop()
@@ -50,7 +50,7 @@ void loop()
   }
   report_wifi();
 
-  if (~mqtt_is_connected())
+  if (!mqtt_is_connected())
     mqtt_reconnect();
 
   if (0 == sensors_found)
@@ -66,7 +66,7 @@ void loop()
         int len = strlen(sensors[s].tag);
         snprintf(sensors[s].tag + len, tag_len - len, "%2.2x", sensors[s].addr[i]);
       }
-      build_topic(sensors[s].topic, topic_len, "lab", sensors[s].tag);
+      build_topic(sensors[s].topic, topic_len, "main level", sensors[s].tag);
     }
   }
 
