@@ -28,7 +28,7 @@ void setup()
 #endif
   init_wifi();
   init_ntp();
-  init_mqtt("192.168.1.117");
+  init_mqtt("192.168.20.105");
 }
 
 void loop()
