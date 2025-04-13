@@ -2,6 +2,8 @@
 
 Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 
+**This sketch is set aside for now and possibly permanently. Please see <https://github.com/HankB/ESP32-Arduino-DS18B20_MQTT/issues/1>**
+
 ## 2025-03-08 Goals
 
 * Refresh my knowledge of VS Code/PlatformIO (PIO) and Arduino model. (I don't care for the Arduino IDE. Further, it seems that the Microsoft Arduino plugin for VS Code is deprecated.)
@@ -19,6 +21,7 @@ Sample readings from a Dallas DS18B20 temperature sensor and publish via MQTT.
 * 2025-03-11 MQTT
 * 2025-03-11 Publish temperature at desired interval.
 * 2025-03-11 first revision is complete.
+* 2025-04-13 this sketch has issues I am unable to resolve. See https://github.com/HankB/ESP32-Arduino-DS18B20_MQTT/issues/1.
 
 ## TODO
 
@@ -68,7 +71,7 @@ hbarta@olive:~/Programming/ESP32-Arduino-DS18B20_MQTT$
 
 Ahhh... Toolchain installed. I think. But no source code. Need to blink an LED to prove everything is working.
 
-Find my ESP8266 Blinky project <https://github.com/HankB/Blinky>, establish that the ESP32 uses the same GPIO for the on bopard LED (2) and copy the C++ source file. Build, flash and Voilà - a blinking blue LED! Now to get to work.
+Find my ESP8266 Blinky project <https://github.com/HankB/Blinky>, establish that the ESP32 uses the same GPIO for the on board LED (2) and copy the C++ source file. Build, flash and Voilà - a blinking blue LED! Now to get to work.
 
 Pull the repo to another directory, change blink frequency, build and flash to confirm that everything is in the repo that needs to be in the repo.
 
@@ -101,7 +104,6 @@ No more addresses.
 ```
 
 Library provides a link to <https://www.pjrc.com/teensy/td_libs_OneWire.html> and there is a note:
-
 
 > OneWire requires a single 4.7K pullup resistor, connected between the pin and your power supply. When using very long wires, or with counterfeit DS18B20 chips and 3.3V power, a resistor in the 1K to 2.7K range may be required. 
 
